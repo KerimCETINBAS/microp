@@ -45,9 +45,7 @@ export interface IEndpointStack {
     hooks?: Array< (request: IRequest) => Record<string, unknown> | void>
     handler: (request: IRequest) => IResponse 
 }
-export interface IServiceOptions {
-        
-}
+
 
 class HTTPError extends Error {
     status: number
@@ -58,11 +56,9 @@ class HTTPError extends Error {
         super(message)
         this.status = status
     }
-
-    
 }
+
 class CreateRequest extends EventEmitter {
-    
     private _originalRequest: IncomingMessage
     rawBody: any 
     body?: Record<string, unknown> | Uint16Array | Buffer | string | undefined
@@ -82,25 +78,16 @@ class CreateRequest extends EventEmitter {
                 next = false
                 const locals = middleware( this._originalRequest,res, err => {
                    next = true
-                   
                 })
 
                 Object.assign(this.locals, locals)
-              
             }
             if(!next) {
                res.end()
             }
        }
-
-       
-
-
        this._originalRequest.on("data" , chunk => this.rawBody = chunk)
        this._originalRequest.once("end", ()=> {
-           
-            
-        
             this.body = ( <IRequest>(<unknown>this._originalRequest)).body
             this.emit("end", this)
        })
@@ -151,10 +138,7 @@ class CreateService {
                 Object.assign(request.params, { [param[0]] : segments[param[1] as number] })
             });
             
-            request.on("end", (request)=> {
-
-                
-              
+            request.on("end", (request)=> { 
                 const endPointRequest = {
                     body: request.body,
                     headers: request.headers,
@@ -165,22 +149,12 @@ class CreateService {
                 }
                 let hookResult: Record<string, unknown> = {}
                 if(endpoint.hooks) {
-                    try {  
-                        endpoint.hooks.forEach(hook => {
-                        
-                            Object.assign(hookResult, hook(endPointRequest))
-                            
-                        })
+                    try {   endpoint.hooks.forEach(hook => {
+                                Object.assign(hookResult, hook(endPointRequest))   })
                 
-                    } catch (error) {
-                        return res.end(String(error))
-                         
-                    }
+                    } catch (error) { return res.end(String(error))  }
                 }
-
                 Object.assign(endPointRequest, hookResult)
-             
-
                 const response = endpoint.handler({...endPointRequest})
                 response.status ? 
                     res.statusCode = response.status :
@@ -215,8 +189,6 @@ class CreateService {
     addEndpoint(endpoint: IEndpoint): this {
         const regexp = new RegExp("^"+endpoint.path.replace(/:\w+/g, "\\w+") + "\/?$")
         const segments = endpoint.path.trim().split("/").filter(t => t != "")
-        
-
         const params = segments.map((segment, index)=> {
 
             const isRegexp = /^:\w+$/.test(segment)
@@ -240,10 +212,8 @@ class CreateService {
             regexp
 
         })
-
         return this
     }
-
     listen(port: number, callback?: ()=> void) : this {
 
         this.server.listen(port)
@@ -251,8 +221,6 @@ class CreateService {
         return this
     }
 }
-
-
 export {
     CreateService, HTTPError
 }
