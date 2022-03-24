@@ -142,7 +142,7 @@ hooks are just like middlewares but they are attach on a endpoint
                 // you can access Microp request as well
 const logHook = (request) => {
     
-    
+    console.log("logged");
     // you can return an object that will merged to next request objects
     return {
         Hello : "world"
@@ -153,6 +153,7 @@ const logHook = (request) => {
 app.addEndpoint({
     method: Methods.Get,
     path: "/",
+    hooks: [logHook],
     handler: (request) => {
 
 
