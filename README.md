@@ -17,14 +17,17 @@ yarn add microp
 ```
 
 
+Using with express middlewares, router, multipart body parsing in progress
+
+
 ## Usage
 
 ```js
-const { Microp, Methods } = require("microp");
+const { Microp } = require("microp");
 
 // with Typescript
 
-import { Microp, Methods } from "microp";
+import { Microp } from "microp";
 ```
 
 
@@ -32,16 +35,11 @@ to create a microp app basicly instantiate Microp class
 
 
 ```js
-const { Microp, Methods } = require("microp");
+const { Microp } = require("microp");
 const app = new Microp();
 
 app.listen(3000);
 ```
-
-visit http://localhost:3000 and you will see; pretty smiliar right?!
-
-
-![image `cannot get`](./images/microp.png)
 
 
 
@@ -54,117 +52,46 @@ visit http://localhost:3000 and you will see; pretty smiliar right?!
 
 const app = new Microp();
 
-app.addEndpoint({
-    method: Methods.Get,
-    path: "/",
-    handler: (request) => {
+// you can use app. post put patch delete as well
+app.get("/", request=> {
 
-
-        return {
-            // you can return headers and status as well
-           
-            body: "hello world"
-        }
+    return {
+        status: 200,
+        headers: {
+            "content-type": "text/html"
+        },
+        body: "<span> Hello world </span>" // you can return buffer, uintarray, object as well
     }
 })
 app.listen(3000); 
 ```
 
-![image `hello world`](./images/microp-hello-world.png)
 
-### using middlewares
-
-
-```js
-...
-import { json } from "body-parser"
-...
-
-
-app.use(json())
-
-//or
-
-app.use((req,res,next)=> {
-
-    console.log("middleware");
-    next();
-})
-
-```
-
-also you can return an object, all objects merged into one,
-on endpoint you can access the object under request.locals
+You can pass array of handlers
+They will run after each other untill a status code or body passed
 
 ```js
 ...
 
+const loghook = request => {
 
-app.use((req,res,next)=> {
+    console.log("loggged")
 
-    next();
-    return {
-        hello: "world"
-    }
-})
-
-
-
-app.addEndpoint({
-    method: Methods.Get,
-    path: "/",
-    handler: (request) => {
-
-
-        return {
-           
-            body: request.locals.hello
-        }
-    }
-})
-
-
-```
-same as expected
-![image `hello world`](./images/microp-hello-world.png)
-
-
-### using hooks
-
-hooks are just like middlewares but they are attach on a endpoint
-
-```js
-...
-
-
-                // you can access Microp request as well
-const logHook = (request) => {
-    
-    console.log("logged");
-    // you can return an object that will merged to next request objects
-    return {
-        Hello : "world"
-    }
+    return 
 }
 
+app.get("/", [loghook, request=> {
 
-app.addEndpoint({
-    method: Methods.Get,
-    path: "/",
-    hooks: [logHook],
-    handler: (request) => {
-
-
-        return {
-            // you can return headers and status as well
-            status: 200,
-            headers: {
-                "content-type": "text/plain"
-            },
-            body: request.Hello
-        }
+    return {
+        status: 200,
+        body: "This route used with loghook"
     }
-})
+}])
+
+
+
+
+
 
 
 ```
