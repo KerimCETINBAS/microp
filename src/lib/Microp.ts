@@ -30,17 +30,16 @@ export interface IResponse {
     
 } 
 export interface IEndpoint {
-    regexp?: RegExp
-    path: string
-    method: Methods
-    hooks?: Array< (request: IRequest) => Record<string, unknown> | void>
+    //regexp?: RegExp
+    
+    //hooks?: Array< (request: IRequest) => Record<string, unknown> | void>
     handler: (request: IRequest) => IResponse 
 }
 
 export interface IEndpointStack {
     regexp?: RegExp
-    path: string
     method: Methods
+    path?: string
     params: Record<string, string | number | undefined>
     hooks?: Array< (request: IRequest) => Record<string, unknown> | void>
     handler: (request: IRequest) => IResponse 
@@ -56,6 +55,10 @@ class HTTPError extends Error {
         super(message)
         this.status = status
     }
+}
+
+function createRequest<EventEmitter>()  {
+
 }
 
 class CreateRequest extends EventEmitter {
@@ -172,6 +175,7 @@ class CreateService {
                             break;
                         default :
                             res.write(response.body)
+                            break;
                     }
                 }
                 res.end()
@@ -185,7 +189,7 @@ class CreateService {
         return this
     }
 
-    
+/*     
     addEndpoint(endpoint: IEndpoint): this {
         const regexp = new RegExp("^"+endpoint.path.replace(/:\w+/g, "\\w+") + "\/?$")
         const segments = endpoint.path.trim().split("/").filter(t => t != "")
@@ -213,7 +217,47 @@ class CreateService {
 
         })
         return this
+    } */
+
+
+    get(path:string,  endpoint: IEndpoint): this
+    get(path:string,  hooks:Array< (request: IRequest) => Record<string, unknown> | void>, endpoint: IEndpoint): this
+    get(path: string, hooks:Array< (request: IRequest) => Record<string, unknown> | void > | IEndpoint , endpoint?: IEndpoint | undefined): this {
+
+        if(!endpoint) endpoint = hooks as IEndpoint
+        const regexp = new RegExp("^"+path.replace(/:\w+/g, "\\w+") + "\/?$")
+        const segments = path.trim().split("/").filter(t => t != "")
+        const params = segments.map((segment, index)=> {
+
+            const isRegexp = /^:\w+$/.test(segment)
+            
+            return {
+                isRegexp,
+                index,
+                param: segment.replace(":","")
+            }
+            
+        }).filter(s => s.isRegexp).reduce((a:any, v) => {
+            a[v.param] = v.index
+
+            return a
+        }, {}) as Record<string, undefined>
+        
+        
+        this.endpoints.push({
+            ...endpoint,
+            handler: endpoint,
+            hooks: hooks,
+            path,
+            params,
+            regexp,
+            method: Methods.Get
+
+        })
+        return this
     }
+
+   
     listen(port: number, callback?: ()=> void) : this {
 
         this.server.listen(port)

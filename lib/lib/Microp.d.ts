@@ -22,21 +22,15 @@ export interface IResponse {
     headers?: Record<string, string>;
 }
 export interface IEndpoint {
-    regexp?: RegExp;
-    path: string;
-    method: Methods;
-    hooks?: Array<(request: IRequest) => Record<string, unknown> | void>;
     handler: (request: IRequest) => IResponse;
 }
 export interface IEndpointStack {
     regexp?: RegExp;
-    path: string;
     method: Methods;
+    path?: string;
     params: Record<string, string | number | undefined>;
     hooks?: Array<(request: IRequest) => Record<string, unknown> | void>;
     handler: (request: IRequest) => IResponse;
-}
-export interface IServiceOptions {
 }
 declare class HTTPError extends Error {
     status: number;
@@ -51,7 +45,8 @@ declare class CreateService {
     private endpoints;
     constructor();
     use(middleware: (req: IncomingMessage, res: ServerResponse, next?: (err?: any) => void) => void | any): this;
-    addEndpoint(endpoint: IEndpoint): this;
+    get(path: string, endpoint: IEndpoint): this;
+    get(path: string, hooks: Array<(request: IRequest) => Record<string, unknown> | void>, endpoint: IEndpoint): this;
     listen(port: number, callback?: () => void): this;
 }
 export { CreateService, HTTPError };
