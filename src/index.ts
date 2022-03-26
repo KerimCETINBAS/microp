@@ -1,11 +1,6 @@
+import { Microp, MicropRouter } from "./microp"
 
 
-import { CreateService as Microp, Methods, HTTPError } from "./lib/Microp"
-
-
-export {
-    Microp, Methods , HTTPError
-}
-module.exports = {
-    Microp, Methods, HTTPError
-} 
+export { Microp, MicropRouter }
+export default { Microp, MicropRouter }
+module.exports = { Microp , MicropRouter} 

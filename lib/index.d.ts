@@ -1,3 +1,8 @@
-import { CreateService as Microp, Methods, HTTPError } from "./lib/Microp";
-export { Microp, Methods, HTTPError };
+import { Microp, MicropRouter } from "./microp";
+export { Microp, MicropRouter };
+declare const _default: {
+    Microp: typeof Microp;
+    MicropRouter: typeof MicropRouter;
+};
+export default _default;
 //# sourceMappingURL=index.d.ts.map
