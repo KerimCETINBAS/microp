@@ -67,6 +67,27 @@ app.listen(3000);
 ```
 
 
+using with params
+```js
+...
+
+const app = new Microp();
+
+// param only can contain alphanumaric characters and underscore (_)
+app.get("/user/:id", request=> {
+    
+    const user - users.find(user => user.id == request.params.id)
+
+    return user 
+        ? { status: 404 } 
+        : { status: 200, body: user }    
+
+})
+app.listen(3000); 
+```
+
+
+
 You can pass array of handlers
 They will run after each other untill a status code or body passed
 
