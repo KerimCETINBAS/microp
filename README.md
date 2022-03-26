@@ -93,7 +93,7 @@ app.use((req,res,next)=> {
 
 ```
 
-also you can return an object, all objects merget into one 
+also you can return an object, all objects merged into one,
 on endpoint you can access the object under request.locals
 
 ```js
@@ -115,10 +115,8 @@ app.addEndpoint({
     path: "/",
     handler: (request) => {
 
-        // request.locals.hello 
 
         return {
-            // you can return headers and status as well
            
             body: request.locals.hello
         }
