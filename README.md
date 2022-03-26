@@ -76,7 +76,7 @@ const app = new Microp();
 // param only can contain alphanumaric characters and underscore (_)
 app.get("/user/:id", request=> {
     
-    const user - users.find(user => user.id == request.params.id)
+    const user = users.find(user => user.id == request.params.id)
 
     return user 
         ? { status: 404 } 
@@ -85,6 +85,30 @@ app.get("/user/:id", request=> {
 })
 app.listen(3000); 
 ```
+
+
+accssing request body
+```js
+...
+
+const app = new Microp();
+
+app.patch("/user/:id", async request => {
+
+    const data = await request.body.json() // .text()
+    
+    const userIndex = users.findIndex(user => user.id == request.params.id)
+
+    user[userIndex] = data 
+    
+    return {
+        status: 200
+    } 
+
+})
+app.listen(3000); 
+```
+
 
 
 
