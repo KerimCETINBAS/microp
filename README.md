@@ -1,6 +1,6 @@
 # Microp micro server library 
 
- Microp is a micro server library with zero dependencies and can work with middlewares 
+ Microp is a micro server library 
 
 
 ---
