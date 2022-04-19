@@ -3,6 +3,8 @@
  Microp is a micro server library built over nodejs standart http module
 
  Only dependency is https://www.npmjs.com/package/formidable
+ 
+ I'm planing to make this zero dependency so ill replace formidable with own parser once finished
 
 &nbsp;&nbsp;
 # Installation
@@ -44,7 +46,7 @@ app.listen(3000);
 
 
 
-### registering a route
+### registering a handler
 ```js
 /* 
     .use() will handle all methods, 
@@ -58,7 +60,7 @@ app.use( request => {
     }
 })
 
-// or you can register on a spesific path
+// or you can register on a spesific route/path
 app.use("/", request => {
 
     return {
@@ -225,7 +227,7 @@ You can pass a router as a handler
 const { Microp, MicropRouter } = require("microp")
 
 
-const router = new MicropRouter("/products")// you can prefix url in consructor its optional
+const router = new MicropRouter("/products")// you can pass prefix url in consructor its optional
 
 router.post(async request=> {
     await users.create( await request.body())
