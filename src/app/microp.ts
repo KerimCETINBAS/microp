@@ -12,7 +12,7 @@ export interface MicropResponse {
 }
 const services = { get: (serviceName: string) => {} }
 export interface MicropRequest {
-    body: () => Promise< Record<string, unknown>>
+    body: () => Promise< Record<string, unknown>  | string | Uint16Array | Buffer>
     params: Record<string, unknown>
     locals: Record<string, unknown>
     headers?: Record<string,string>
@@ -31,7 +31,7 @@ export class Microp  extends Core.MicropCore {
 
             const _body = new MicropBody(req)
 
-            const body = (): Promise<Record<string,string>> => new Promise((resolve)=>{
+            const body = (): Promise<Record<string,string>  | string | Uint16Array | Buffer> => new Promise((resolve)=>{
                 resolve(_body.form())
             })
             const url = (req.url?.replace(/\?.*$/,'') || "/").trim(),  request: MicropRequest = {
