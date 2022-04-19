@@ -1,6 +1,6 @@
 {
   "name": "microp",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "author": "kerimCetinbas <a.kerim.cetinbas@yandex.com>",
   "license": "MIT",
   "bin": "lib/index.js",
