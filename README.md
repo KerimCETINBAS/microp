@@ -1,10 +1,11 @@
 # Microp micro server library 
 
- Microp is a micro server library 
+ Microp is a micro server library built over nodejs standart http module
 
+ Only dependency is https://www.npmjs.com/package/formidable
 
----
-## Installation
+&nbsp;&nbsp;
+# Installation
 
 NPM
 ```shell
@@ -16,22 +17,21 @@ yarn
 yarn add microp
 ```
 
-
-Using with express middlewares, router, multipart body parsing in progress
-
-
+&nbsp;&nbsp;
 ## Usage
 
+  
 ```js
 const { Microp } = require("microp");
 
 // with Typescript
 
 import { Microp } from "microp";
+
 ```
 
 
-to create a microp app basicly instantiate Microp class
+### Creating new microp app
 
 
 ```js
@@ -39,104 +39,227 @@ const { Microp } = require("microp");
 const app = new Microp();
 
 app.listen(3000);
+
 ```
 
 
 
 ### registering a route
-
-
-
 ```js
-...
+/* 
+    .use() will handle all methods, 
+    you can use get, post, put, patch, delete, head, options as well
 
-const app = new Microp();
-
-// you can use app. post put patch delete as well
-app.get("/", request=> {
+*/
+app.use( request => {
 
     return {
-        status: 200,
-        headers: {
-            "content-type": "text/html"
-        },
-        body: "<span> Hello world </span>" // you can return buffer, uintarray, object as well
+        body "hello world"
     }
 })
-app.listen(3000); 
-```
 
+// or you can register on a spesific path
+app.use("/", request => {
 
-using with params
-```js
-...
-
-const app = new Microp();
-
-// param only can contain alphanumaric characters and underscore (_)
-app.get("/user/:id", request=> {
-    
-    const user = users.find(user => user.id == request.params.id)
-
-    return user 
-        ? { status: 404 } 
-        : { status: 200, body: user }    
-
+    return {
+        body "hello world"
+    }
 })
-app.listen(3000); 
+```
+### Params
+All params will be accessible at request.params
+Params must be match with /\\:\w+/ 
+```js
+app.use("/user/:id", request => {
+     
+    return {
+        body : user[request.params.id] // fake data source
+    }
+})
 ```
 
 
-accssing request body
+
+### Query string
+
+Querystrings will be accessible at request.query
 ```js
-...
+app.use("/user", request => {
+     
+    return {
+        body : user[request.query.id] // fake data source
+    }
+})
+```
 
-const app = new Microp();
 
-app.patch("/user/:id", async request => {
+### Request body 
+accessing request body is asynchronous
 
-    const data = await request.body.json() // .text()
-    
-    const userIndex = users.findIndex(user => user.id == request.params.id)
+```js
+app.post("/user", async  request => {
 
-    user[userIndex] = data 
-    
+    const { user } = await request.body()
+
+    users.push(user) // fake data store
+
     return {
         status: 200
-    } 
-
+    }
 })
-app.listen(3000); 
 ```
-
-
-
-
-You can pass array of handlers
-They will run after each other untill a status code or body passed
-
+also you can access files as well  
+files upload os tmp dir
 ```js
-...
+app.post("/user/:id", async  request => {
 
-const loghook = request => {
+    const { avatar } = await request.body()
 
-    console.log("loggged")
+    if(avatar.isFile) {
+        //  move file from tmp dir
 
-    return 
-}
-
-app.get("/", [loghook, request=> {
+        users[request.params.id].avatar = some/upload/path.ext
+    }
 
     return {
-        status: 200,
-        body: "This route used with loghook"
+        status: 200
     }
-}])
+})
+```
+&nbsp;
+# Registering multiple handler on same endpoint
+
+## option 1
+```js
+
+app.use("/", request => {
+    console.log("Handler 1")
+    return 
+})
+
+app.use("/", request => {
+    console.log("Handler 2")
+    return 
+})
+
+
+app.use("/", request => {
+    console.log("Handler 3")
+    return {
+        body: "hello world"
+    }
+})
+
+
+```
+
+all handlers will be run recusively untill body or status code sended
+
+also you can send parameter one handler to next handler
+
+```js
+
+app.use("/", request => {
+    console.log("Handler 1")
+
+    // all properties in the locals will be accesible at next handler 
+    return {
+        locals: {
+            hello: "world"
+        }
+    }
+})
+
+app.use("/", request => {
+    console.log(request.locals.hello) // world
+    return {
+        status: 200
+    }
+})
+
+```
+## option 2
+this is yet another elegant way to organize endpoint management
+```js
+
+    const logger = request => console.log("user")
+    // passing handlers in an array
+    app.get("/user" , [logger, request => {
+
+        return {
+            body: "jdoe"
+        }
+    }])
+```
+# Middlewares 
+Middlewares is a Tradional express way of handler with (req, res, next) pattern
+if you dont need this type of middleware  
+consider using standart microp handler
+
+
+```js
+    const { MicropMiddleware } = require("microp")
+    const Helmet = require("helmet")
+
+    const helmetMiddleware = new MicropMiddleware(helmet())
+
+    app.use(helmetMiddleware) // will hit every endpoints
+    
+    //or
+
+    app.get("/user",helmetMiddleware)
+
+    //or
+
+    app.get("/user" , [helmetMiddleware, request => {
+        return {
+            body: "jdoe"
+        }
+    }])
+```
+# Router
+
+You can pass a router as a handler
+
+```js
+const { Microp, MicropRouter } = require("microp")
+
+
+const router = new MicropRouter("/products")// you can prefix url in consructor its optional
+
+router.post(async request=> {
+    await users.create( await request.body())
+    return {
+        status: 200
+    }
+})
+
+router.get("/:id", async request=> {
+    
+    return {
+        headers: {
+            "content-type": "application/json"
+        },
+        status: 200,
+        body: users.find( await request.params.id)
+    }
+})
 
 
 
 
+const app = new Microp();
+
+// if you pass a spesific path to handler, router constructor overriden with this path
+app.use("/user", router)  
+/*
+    products overriden with /user now
+    /products/** endpoints not hit anymore
+
+
+*/
 
 
 
+app.listen(3000);
 ```
