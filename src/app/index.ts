@@ -1,8 +1,9 @@
 import {  Server } from "http"
-import { MicropRequest } from "../body"
+import { MicropBody } from "../body"
 import { 
     Core, 
     EMicropMethod, 
+    IMicropRequest, 
     IMicropResponse, 
     IOriginalRequest, 
     IOriginalResponse, 
@@ -36,14 +37,25 @@ const requestHandler = (stack: IStackItem[]) =>
         const requestUrl: string = req.url || "/";
         const stackForRequest: IStackItem[] = 
             stack.filter(s => s.regexpPath?.test(requestUrl) && s.method.test(req.method || ""))
-        const request = new MicropRequest(req)
+
+       
+        const request:IMicropRequest = {
+            body: new MicropBody(req),
+            cookies: {},
+            headers: req.headers as Record<string,string>,
+            params:  {},
+            locals:  {}
+        } 
+       
         let isBodySend:boolean = false;
         for (const handler of stackForRequest) {
-
+         
             if(handler.isMiddleware) {
                 registerMiddleware(req,res,handler.handler as MicropMiddleware)
                 request.locals = {...request.locals, ...req.locals as Record<string,unknown>}
+               
                 if(res.writableEnded) {
+                  
                     break;
                 }
                 else continue;
@@ -51,6 +63,7 @@ const requestHandler = (stack: IStackItem[]) =>
             try {
                 // status code veya body gonderilene kadar butun handlerlar sirasi ile calisiyor, 
                 // donen locals objesi bir sonraki handlerin request objesindeki locals ile merge ediliyor
+                console.log("request")
                 const response: IMicropResponse = await (handler.handler as MicropHandler)(request)
                 if(response == undefined) continue;
                 isBodySend = response.body !== undefined || response.status !== undefined
@@ -58,6 +71,7 @@ const requestHandler = (stack: IStackItem[]) =>
                 request.locals = {...request.locals, ...response.locals as Record<string,unknown>}
                 if(!isBodySend) continue;
                 else { 
+                    console.log("body")
                     res.statusCode = response.status ? response.status : 200
                     res.end(response.body)
                     break
