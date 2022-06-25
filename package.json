@@ -17,9 +17,6 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/KerimCETINBAS/Microp.git"
-  },
-  "dependencies": {
-    "@types/formidable": "^2.0.4",
-    "formidable": "^2.0.1"
   }
+
 }
