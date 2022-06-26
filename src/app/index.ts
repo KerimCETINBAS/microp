@@ -1,5 +1,6 @@
 import {  Server } from "http"
 import { MicropBody } from "../body"
+import { CookieParser } from "../helpers"
 import { 
     Core, 
     EMicropMethod, 
@@ -39,7 +40,7 @@ const requestHandler = (stack: IStackItem[]) =>
             stack.filter(s => s.regexpPath?.test(requestUrl) && s.method.test(req.method || ""))
         const request: IMicropRequest = {
             body: new MicropBody(req),
-            cookies: {},
+            cookies: CookieParser(req.headers.cookie || ""),
             headers: req.headers as Record<string,string>,
             params:  {},
             locals:  {}
@@ -59,6 +60,13 @@ const requestHandler = (stack: IStackItem[]) =>
                 // status code veya body gonderilene kadar butun handlerlar sirasi ile calisiyor, 
                 // donen locals objesi bir sonraki handlerin request objesindeki locals ile merge ediliyor
                 const response: IMicropResponse = await (handler.handler as MicropHandler)(request)
+                if(response.headers) {
+                    Object.entries(response.headers).forEach( h => res.setHeader(h[0],h[1]))
+                }
+                if(response.cookies !== undefined) {
+                    console.log(response.cookies)
+                    res.setHeader("set-cookie", response.cookies)
+                }
                 if(response == undefined) continue;
                 isBodySend = response.body !== undefined || response.status !== undefined
                 // donen locals objesi bir sonraki handlerin request objesindeki locals ile merge ediliyor
