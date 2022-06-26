@@ -1,8 +1,9 @@
 import {  Server } from "http"
-import { MicropRequest } from "../body"
+import { MicropBody } from "../body"
 import { 
     Core, 
     EMicropMethod, 
+    IMicropRequest, 
     IMicropResponse, 
     IOriginalRequest, 
     IOriginalResponse, 
@@ -36,7 +37,13 @@ const requestHandler = (stack: IStackItem[]) =>
         const requestUrl: string = req.url || "/";
         const stackForRequest: IStackItem[] = 
             stack.filter(s => s.regexpPath?.test(requestUrl) && s.method.test(req.method || ""))
-        const request = new MicropRequest(req)
+        const request: IMicropRequest = {
+            body: new MicropBody(req),
+            cookies: {},
+            headers: req.headers as Record<string,string>,
+            params:  {},
+            locals:  {}
+        }
         let isBodySend:boolean = false;
         for (const handler of stackForRequest) {
 
