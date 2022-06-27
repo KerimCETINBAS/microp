@@ -1,10 +1,16 @@
 {
   "name": "microp",
-  "version": "1.0.0",
+  "version": "0.1.9",
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^18.0.0"
+  }, 
+  "bin": "dist/index.js",
+  "author": "Kerim Cetinbas <a.kerim.cetinbas@yandex.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kerimCetinbas/microp.git"
   }
  
 }
