@@ -11,6 +11,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/kerimCetinbas/microp.git"
+  },
+  "publishConfig": {
+    "registry":"https://npm.pkg.github.com"
   }
- 
 }
