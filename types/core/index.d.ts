@@ -33,7 +33,7 @@ export interface IMicropRequest {
 }
 export interface IMicropResponse {
     status?: number;
-    body?: string | Buffer | Uint8Array | Record<string, unknown>;
+    body?: string | Buffer | Uint8Array | Record<string, unknown> | Array<unknown>;
     headers?: Record<string, string>;
     cookies?: any;
     locals?: Record<string, unknown>;
@@ -51,7 +51,7 @@ export interface IStackItem {
     query?: Record<string, string>;
     isMiddleware: boolean;
 }
-export declare type MicropHandler = (request: IMicropRequest) => Promise<IMicropResponse>;
+export declare type MicropHandler = (request: IMicropRequest) => Promise<IMicropResponse> | IMicropResponse;
 export declare class MicropMiddleware {
     readonly middleWareFunc: (req: IOriginalRequest, res: IOriginalResponse, next?: (error?: string) => void) => void;
     constructor(middleWareFunc: (req: IOriginalRequest, res: IOriginalResponse, next?: (error?: string) => void) => void);

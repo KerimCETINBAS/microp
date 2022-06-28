@@ -239,6 +239,7 @@ declare module 'microp/helpers/index' {
   export const SetCookie: (name: string, value: string, options: ICookieOptions) => string;
   export const getParams: (url: string, params: Record<string, string>) => Record<string, string>;
   export const ParseQurtyString: (str: string, host: string) => Record<string, string[] | string>;
+  export const ResponseBodyParser: (body: unknown) => string;
 
 }
 declare module 'microp/index' {

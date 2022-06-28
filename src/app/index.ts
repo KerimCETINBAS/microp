@@ -1,6 +1,6 @@
 import {  Server } from "http"
 import { MicropBody } from "../body"
-import { CookieParser, getParams, ParseQurtyString } from "../helpers"
+import { CookieParser, getParams, ParseQurtyString, ResponseBodyParser } from "../helpers"
 import { 
     Core, 
     EMicropMethod, 
@@ -80,7 +80,8 @@ const requestHandler = (stack: IStackItem[]) =>
                 if(!isBodySend) continue;
                 else { 
                     res.statusCode = response.status ? response.status : 200
-                    res.end(response.body)
+                    
+                    res.end(ResponseBodyParser(response.body))
                     break
                 } 
             } catch { res.statusCode = 500; res.end(); break;}

@@ -25,3 +25,4 @@ export declare const CookieParser: (cookieHeader: string) => Record<string, stri
 export declare const SetCookie: (name: string, value: string, options: ICookieOptions) => string;
 export declare const getParams: (url: string, params: Record<string, string>) => Record<string, string>;
 export declare const ParseQurtyString: (str: string, host: string) => Record<string, string[] | string>;
+export declare const ResponseBodyParser: (body: unknown) => string;
