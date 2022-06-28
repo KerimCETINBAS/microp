@@ -1,6 +1,6 @@
 {
   "name": "microp",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "main": "dist/index.js",
   "license": "MIT",
   "devDependencies": {
@@ -11,8 +11,5 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/kerimCetinbas/microp.git"
-  },
-  "publishConfig": {
-    "registry":"https://npm.pkg.github.com"
   }
 }
