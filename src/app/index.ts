@@ -170,36 +170,28 @@ export class Microp extends Core implements App {
 
 export class MicropRouter extends Core {
 
-
-
     use(handler: MicropMiddleware | MicropHandler | MicropRouter): this
     use(path: string, handler: MicropMiddleware | MicropHandler | MicropRouter): this
     use(handler: (MicropMiddleware | MicropHandler | MicropRouter)[]): this
     use(path: string, handler: (MicropMiddleware | MicropHandler | MicropRouter)[]): this
     use(path: unknown, handler?: unknown): this {
-          this.stack = [...this.stack, ...CreateStackItem(MicropMethod[EMicropMethod.USE],path, handler)]
-      
-       return this
+        this.stack = [...this.stack, ...CreateStackItem( MicropMethod[EMicropMethod.USE], path, handler)]
+        return this
     }
-
-
-    get(handler: MicropHandler): this;
-    get(path: string, handler: MicropHandler): this;
-    get(handler: MicropHandler[]): this;
-    get(path: string, handler: MicropHandler[]): this;
-    get(path: string | MicropHandler | MicropHandler[], handler?: MicropHandler | MicropHandler[] ): this {
-       this.stack = [...this.stack, ...CreateStackItem(MicropMethod[EMicropMethod.GET],path, handler)]
-      
-       return this
+    get(handler: MicropMiddleware | MicropHandler | MicropRouter): this
+    get(path: string, handler: MicropMiddleware | MicropHandler | MicropRouter): this
+    get(handler: (MicropMiddleware | MicropHandler | MicropRouter)[]): this
+    get(path: string, handler: (MicropMiddleware | MicropHandler | MicropRouter)[]): this
+    get(path: unknown, handler?: unknown): this {
+        this.stack = [...this.stack, ...CreateStackItem( MicropMethod[EMicropMethod.GET], path, handler)]
+        return this
     }
-
     post(handler: MicropMiddleware | MicropHandler | MicropRouter): this
     post(path: string, handler: MicropMiddleware | MicropHandler | MicropRouter): this
     post(handler: (MicropMiddleware | MicropHandler | MicropRouter)[]): this
     post(path: string, handler: (MicropMiddleware | MicropHandler | MicropRouter)[]): this
     post(path: unknown, handler?: unknown): this {
-        this.stack = [...this.stack, ...CreateStackItem(MicropMethod[EMicropMethod.POST],path, handler)]
-      
+        this.stack = [...this.stack, ...CreateStackItem( MicropMethod[EMicropMethod.POST], path, handler)]
         return this
     }
     put(handler: MicropMiddleware | MicropHandler | MicropRouter): this
@@ -207,8 +199,7 @@ export class MicropRouter extends Core {
     put(handler: (MicropMiddleware | MicropHandler | MicropRouter)[]): this
     put(path: string, handler: (MicropMiddleware | MicropHandler | MicropRouter)[]): this
     put(path: unknown, handler?: unknown): this {
-        this.stack = [...this.stack, ...CreateStackItem(MicropMethod[EMicropMethod.PUT],path, handler)]
-      
+        this.stack = [...this.stack, ...CreateStackItem( MicropMethod[EMicropMethod.PUT], path, handler)]
         return this
     }
     patch(handler: MicropMiddleware | MicropHandler | MicropRouter): this
@@ -216,8 +207,7 @@ export class MicropRouter extends Core {
     patch(handler: (MicropMiddleware | MicropHandler | MicropRouter)[]): this
     patch(path: string, handler: (MicropMiddleware | MicropHandler | MicropRouter)[]): this
     patch(path: unknown, handler?: unknown): this {
-        this.stack = [...this.stack, ...CreateStackItem(MicropMethod[EMicropMethod.PATCH],path, handler)]
-      
+        this.stack = [...this.stack, ...CreateStackItem( MicropMethod[EMicropMethod.PATCH], path, handler)]
         return this
     }
     delete(handler: MicropMiddleware | MicropHandler | MicropRouter): this
@@ -225,8 +215,7 @@ export class MicropRouter extends Core {
     delete(handler: (MicropMiddleware | MicropHandler | MicropRouter)[]): this
     delete(path: string, handler: (MicropMiddleware | MicropHandler | MicropRouter)[]): this
     delete(path: unknown, handler?: unknown): this {
-        this.stack = [...this.stack, ...CreateStackItem(MicropMethod[EMicropMethod.DELETE],path, handler)]
-      
+        this.stack = [...this.stack, ...CreateStackItem( MicropMethod[EMicropMethod.DELETE], path, handler)]
         return this
     }
     head(handler: MicropMiddleware | MicropHandler | MicropRouter): this
@@ -234,8 +223,7 @@ export class MicropRouter extends Core {
     head(handler: (MicropMiddleware | MicropHandler | MicropRouter)[]): this
     head(path: string, handler: (MicropMiddleware | MicropHandler | MicropRouter)[]): this
     head(path: unknown, handler?: unknown): this {
-        this.stack = [...this.stack, ...CreateStackItem(MicropMethod[EMicropMethod.HEAD],path, handler)]
-      
+        this.stack = [...this.stack, ...CreateStackItem( MicropMethod[EMicropMethod.HEAD], path, handler)]
         return this
     }
     option(handler: MicropMiddleware | MicropHandler | MicropRouter): this
@@ -243,11 +231,10 @@ export class MicropRouter extends Core {
     option(handler: (MicropMiddleware | MicropHandler | MicropRouter)[]): this
     option(path: string, handler: (MicropMiddleware | MicropHandler | MicropRouter)[]): this
     option(path: unknown, handler?: unknown): this {
-        this.stack = [...this.stack, ...CreateStackItem(MicropMethod[EMicropMethod.OPTIONS],path, handler)]
-      
+        this.stack = [...this.stack, ...CreateStackItem( MicropMethod[EMicropMethod.OPTIONS], path, handler)]
         return this
     }
-  
+   
  
 
 }
