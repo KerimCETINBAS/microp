@@ -53,10 +53,10 @@ export declare class MicropRouter extends Core {
     use(path: string, handler: MicropMiddleware | MicropHandler | MicropRouter): this;
     use(handler: (MicropMiddleware | MicropHandler | MicropRouter)[]): this;
     use(path: string, handler: (MicropMiddleware | MicropHandler | MicropRouter)[]): this;
-    get(handler: MicropHandler): this;
-    get(path: string, handler: MicropHandler): this;
-    get(handler: MicropHandler[]): this;
-    get(path: string, handler: MicropHandler[]): this;
+    get(handler: MicropMiddleware | MicropHandler | MicropRouter): this;
+    get(path: string, handler: MicropMiddleware | MicropHandler | MicropRouter): this;
+    get(handler: (MicropMiddleware | MicropHandler | MicropRouter)[]): this;
+    get(path: string, handler: (MicropMiddleware | MicropHandler | MicropRouter)[]): this;
     post(handler: MicropMiddleware | MicropHandler | MicropRouter): this;
     post(path: string, handler: MicropMiddleware | MicropHandler | MicropRouter): this;
     post(handler: (MicropMiddleware | MicropHandler | MicropRouter)[]): this;
