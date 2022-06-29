@@ -53,8 +53,8 @@ export interface IStackItem {
 }
 export declare type MicropHandler = (request: IMicropRequest) => Promise<IMicropResponse> | IMicropResponse;
 export declare class MicropMiddleware {
-    readonly middleWareFunc: (req: IncomingMessage, res: IncomingMessage, next?: (error?: unknown) => void) => void;
-    constructor(middleWareFunc: (req: IncomingMessage, res: IncomingMessage, next?: (error?: unknown) => void) => void);
+    readonly middleWareFunc: (req: IncomingMessage, res: ServerResponse, next: (error?: unknown) => void) => void;
+    constructor(middleWareFunc: (req: IncomingMessage, res: ServerResponse, next: (error?: unknown) => void) => void);
 }
 export declare abstract class Core extends EventEmitter {
     protected stack: IStackItem[];

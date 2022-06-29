@@ -170,8 +170,8 @@ declare module 'microp/core/index' {
   }
   export type MicropHandler = (request: IMicropRequest) => Promise<IMicropResponse> | IMicropResponse;
   export class MicropMiddleware {
-      readonly middleWareFunc: (req: IncomingMessage, res: IncomingMessage, next?: (error?: unknown) => void) => void;
-      constructor(middleWareFunc: (req: IncomingMessage, res: IncomingMessage, next?: (error?: unknown) => void) => void);
+      readonly middleWareFunc: (req: IncomingMessage, res: ServerResponse, next: (error?: unknown) => void) => void;
+      constructor(middleWareFunc: (req: IncomingMessage, res: ServerResponse, next: (error?: unknown) => void) => void);
   }
   export abstract class Core extends EventEmitter {
       protected stack: IStackItem[];
@@ -222,10 +222,7 @@ declare module 'microp/helpers/index' {
    * @param middleware MiddlewareFunction
    * @returns {req: IOriginalRequest, res:IOriginalResponse}
    */
-  export const registerMiddleware: (req: IncomingMessage, res: ServerResponse, middleware: MicropMiddleware) => {
-      req: IncomingMessage;
-      res: ServerResponse;
-  };
+  export const registerMiddleware: (req: IncomingMessage, res: ServerResponse, middleware: MicropMiddleware) => boolean;
   export interface ICookieOptions {
       Expires?: Date;
       MaxAge?: number;

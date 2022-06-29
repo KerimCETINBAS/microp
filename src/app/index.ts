@@ -46,7 +46,8 @@ const requestHandler = (stack: IStackItem[]) =>
             headers: req.headers as Record<string,string>,
             params: {},
             query: ParseQurtyString(req.url || "", req.headers.host || ""),
-            locals:  {}
+            locals:  {},
+            url: req.url
         }
 
         let isBodySend:boolean = false;
@@ -55,9 +56,11 @@ const requestHandler = (stack: IStackItem[]) =>
             request.params = getParams(req.url || "", handler.params || {})
 
             if(handler.isMiddleware) {
-                registerMiddleware(req,res,handler.handler as MicropMiddleware)
+                const isEnded = registerMiddleware(req,res,handler.handler as MicropMiddleware)
+
+              
                 request.locals = {...request.locals, ...req.locals as Record<string,unknown>}
-                if(res.writableEnded) {
+                if(isEnded) {
                     break;
                 }
                 else continue;
