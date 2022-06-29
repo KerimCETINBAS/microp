@@ -170,8 +170,8 @@ declare module 'microp/core/index' {
   }
   export type MicropHandler = (request: IMicropRequest) => Promise<IMicropResponse> | IMicropResponse;
   export class MicropMiddleware {
-      readonly middleWareFunc: (req: IOriginalRequest, res: IOriginalResponse, next?: (error?: string) => void) => void;
-      constructor(middleWareFunc: (req: IOriginalRequest, res: IOriginalResponse, next?: (error?: string) => void) => void);
+      readonly middleWareFunc: (req: IOriginalRequest, res: IOriginalResponse, next?: (error?: unknown) => void) => void;
+      constructor(middleWareFunc: (req: IOriginalRequest, res: IOriginalResponse, next?: (error?: unknown) => void) => void);
   }
   export abstract class Core extends EventEmitter {
       protected stack: IStackItem[];
