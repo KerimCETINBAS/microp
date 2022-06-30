@@ -52,41 +52,50 @@ const requestHandler = (stack: IStackItem[]) =>
 
         let isBodySend:boolean = false;
         for (const handler of stackForRequest) {
-            
-            request.params = getParams(req.url || "", handler.params || {})
-
-            if(handler.isMiddleware) {
-                const isEnded = registerMiddleware(req,res,handler.handler as MicropMiddleware)
-
-              
-                request.locals = {...request.locals, ...req.locals as Record<string,unknown>}
-                if(isEnded) {
-                    break;
-                }
-                else continue;
-            }
+        // status code veya body gonderilene kadar butun handlerlar sirasi ile calisiyor, 
+        // donen locals objesi bir sonraki handlerin request objesindeki locals ile merge ediliyor
+    
             try {
-                // status code veya body gonderilene kadar butun handlerlar sirasi ile calisiyor, 
-                // donen locals objesi bir sonraki handlerin request objesindeki locals ile merge ediliyor
-             
-                const response: IMicropResponse = await (handler.handler as MicropHandler)(request)
-                if(response.headers) {
-                    Object.entries(response.headers).forEach( h => res.setHeader(h[0],h[1]))
-                }
-                if(response.cookies !== undefined) {
-                    res.setHeader("set-cookie", response.cookies)
-                }
-                if(response == undefined) continue;
-                isBodySend = response.body !== undefined || response.status !== undefined
-                // donen locals objesi bir sonraki handlerin request objesindeki locals ile merge ediliyor
-                request.locals = {...request.locals, ...response.locals as Record<string,unknown>}
-                if(!isBodySend) continue;
-                else { 
-                    res.statusCode = response.status ? response.status : 200
+
+                request.params = getParams(req.url || "", handler.params || {})
+
+                if(handler.isMiddleware) {
+                    await registerMiddleware(req,res,handler.handler as MicropMiddleware)
                     
-                    res.end(ResponseBodyParser(response.body))
-                    break
-                } 
+                   
+                    const {req: _req, res:_res} =request.locals = 
+                        {   ...request.locals, 
+                            ...req.locals as Record<string,unknown> }
+                    
+                    if(res.writableEnded) {
+                        break;
+                    }
+                    else continue;
+                }
+             
+             
+                else {
+                
+                    const response: IMicropResponse = await (handler.handler as MicropHandler)(request)
+                    if(response.headers) {
+                       res.writeHead(response.status || 200, response.headers)
+                    }
+                    if(response.cookies !== undefined) {
+                        res.setHeader("set-cookie", response.cookies)
+                    }
+                    if(response == undefined) continue;
+                    isBodySend = response.body !== undefined || response.status !== undefined
+                    // donen locals objesi bir sonraki handlerin request objesindeki locals ile merge ediliyor
+                    request.locals = {...request.locals, ...response.locals as Record<string,unknown>}
+                    if(!isBodySend) continue;
+                    else { 
+                        res.statusCode = response.status ? response.status : 200
+                       
+                        console.log(response.body instanceof Buffer)
+                        res.end(ResponseBodyParser(response.body))
+                        break
+                    } 
+                }
             } catch { res.statusCode = 500; res.end(); break;}
            
     }

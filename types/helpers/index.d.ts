@@ -8,7 +8,10 @@ export declare const CreateStackItem: (method: RegExp, path: unknown, handler: u
  * @param middleware MiddlewareFunction
  * @returns {req: IOriginalRequest, res:IOriginalResponse}
  */
-export declare const registerMiddleware: (req: IncomingMessage, res: ServerResponse, middleware: MicropMiddleware) => boolean;
+export declare const registerMiddleware: (req: IncomingMessage, res: ServerResponse, middleware: MicropMiddleware) => Promise<{
+    req: IncomingMessage;
+    res: ServerResponse;
+}>;
 export interface ICookieOptions {
     Expires?: Date;
     MaxAge?: number;

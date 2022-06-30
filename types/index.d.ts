@@ -150,7 +150,7 @@ declare module 'microp/core/index' {
   }
   export interface IMicropResponse {
       status?: number;
-      body?: string | Buffer | Uint8Array | Record<string, unknown> | Array<unknown>;
+      body?: string | Buffer | Uint8Array | Record<string, unknown> | Array<unknown> | File;
       headers?: Record<string, string>;
       cookies?: any;
       locals?: Record<string, unknown>;
@@ -222,7 +222,10 @@ declare module 'microp/helpers/index' {
    * @param middleware MiddlewareFunction
    * @returns {req: IOriginalRequest, res:IOriginalResponse}
    */
-  export const registerMiddleware: (req: IncomingMessage, res: ServerResponse, middleware: MicropMiddleware) => boolean;
+  export const registerMiddleware: (req: IncomingMessage, res: ServerResponse, middleware: MicropMiddleware) => Promise<{
+      req: IncomingMessage;
+      res: ServerResponse;
+  }>;
   export interface ICookieOptions {
       Expires?: Date;
       MaxAge?: number;
