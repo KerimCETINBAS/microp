@@ -248,6 +248,5 @@ export class MicropRouter extends Core {
         return this
     }
    
- 
-
-}
+ }
+ //Bütün pull requestler PR olarak sayılacaktır.
