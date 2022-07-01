@@ -77,4 +77,29 @@ describe("endpoint handler" , () => {
         expect((app.Stack[0].handler as MicropHandler)(request)).to.has.property("body").to.be.a("object")
 
     })
+
+
+    it("should return buffer body", ()=> {
+
+        const handler: MicropHandler = (request) => {
+
+            return {}
+        }
+        let request: IMicropRequest = {
+            body: new MicropBody({} as IncomingMessage),
+            cookies: {},
+            headers: {}
+        }
+
+        const app = new Microp()
+
+        app.use(request => {
+            return {
+                body: Buffer.from("hello world")
+            }
+        })
+        
+        expect((app.Stack[0].handler as MicropHandler)(request)).to.has.property("body").to.be.instanceOf(Buffer)
+    })
+    
 })
