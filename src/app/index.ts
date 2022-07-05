@@ -103,7 +103,7 @@ const requestHandler = (stack: IStackItem[]) =>
 }
 
 /**
- * @description  
+ * @description  Microp uygulaması instance yaratır.
  */
 export class Microp extends Core implements App {
     use(handler: MicropMiddleware | MicropHandler | MicropRouter): this
@@ -248,6 +248,5 @@ export class MicropRouter extends Core {
         return this
     }
    
- 
-
-}
+ }
+ //Bütün pull requestler PR olarak sayılacaktır.
