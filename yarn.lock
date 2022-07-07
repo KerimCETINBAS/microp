@@ -27,6 +27,11 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
+"@polka/url@^1.0.0-next.20":
+  version "1.0.0-next.21"
+  resolved "https://registry.yarnpkg.com/@polka/url/-/url-1.0.0-next.21.tgz#5de5a2385a35309427f6011992b544514d559aa1"
+  integrity sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==
+
 "@tsconfig/node10@^1.0.7":
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/@tsconfig/node10/-/node10-1.0.9.tgz#df4907fc07a886922637b15e02d4cebc4c0021b2"
@@ -484,6 +489,11 @@ mocha@^10.0.0:
     yargs-parser "20.2.4"
     yargs-unparser "2.0.0"
 
+mrmime@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/mrmime/-/mrmime-1.0.1.tgz#5f90c825fad4bdd41dc914eff5d1a8cfdaf24f27"
+  integrity sha512-hzzEagAgDyoU1Q6yg5uI+AorQgdvMCur3FcKf7NhMKWsaYg+RnbTyHRa/9IlLF9rf455MOCtcqqrQQ83pPP7Uw==
+
 ms@2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.2.tgz#d09d1f357b443f493382a8eb3ccd183872ae6009"
@@ -576,6 +586,15 @@ serialize-javascript@6.0.0:
   dependencies:
     randombytes "^2.1.0"
 
+sirv@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/sirv/-/sirv-2.0.2.tgz#128b9a628d77568139cff85703ad5497c46a4760"
+  integrity sha512-4Qog6aE29nIjAOKe/wowFTxOdmbEZKb+3tsLljaBRzJwtqto0BChD2zzH0LhgCSXiI+V7X+Y45v14wBZQ1TK3w==
+  dependencies:
+    "@polka/url" "^1.0.0-next.20"
+    mrmime "^1.0.0"
+    totalist "^3.0.0"
+
 ski@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/ski/-/ski-1.0.0.tgz#15e49dfd4f044260e26fc73c01426511852137b6"
@@ -622,6 +641,11 @@ to-regex-range@^5.0.1:
   integrity sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==
   dependencies:
     is-number "^7.0.0"
+
+totalist@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/totalist/-/totalist-3.0.0.tgz#4ef9c58c5f095255cdc3ff2a0a55091c57a3a1bd"
+  integrity sha512-eM+pCBxXO/njtF7vdFsHuqb+ElbxqtI4r5EAvk6grfAFyJ6IvWlSkfZ5T9ozC6xWw3Fj1fGoSmrl0gUs46JVIw==
 
 tracery@^1.0.3:
   version "1.0.3"

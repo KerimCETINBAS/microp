@@ -91,12 +91,13 @@ const requestHandler = (stack: IStackItem[]) =>
                     else { 
                         res.statusCode = response.status ? response.status : 200
                        
-                        console.log(response.body instanceof Buffer)
                         res.end(ResponseBodyParser(response.body))
                         break
                     } 
                 }
             } catch { res.statusCode = 500; res.end(); break;}
+
+       
            
     }
    
