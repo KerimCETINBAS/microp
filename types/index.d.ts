@@ -11,7 +11,7 @@ declare module 'microp/app/index' {
       listen: (port: number, callback?: () => void) => this;
   }
   /**
-   * @description
+   * @description  Microp uygulaması instance yaratır.
    */
   export class Microp extends Core implements App {
       use(handler: MicropMiddleware | MicropHandler | MicropRouter): this;
@@ -88,6 +88,7 @@ declare module 'microp/app/index' {
 }
 declare module 'microp/body/index' {
   /// <reference types="node" />
+  /// <reference types="node" />
   import { IncomingMessage } from "http";
   type Input = {
       filename?: string;
@@ -115,6 +116,8 @@ declare module 'microp/body/index' {
 
 }
 declare module 'microp/core/index' {
+  /// <reference types="node" />
+  /// <reference types="node" />
   /// <reference types="node" />
   import { EventEmitter } from "events";
   import { IncomingMessage, ServerResponse } from "http";
