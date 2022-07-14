@@ -1,4 +1,7 @@
-src/
+dist
+dist/
+!src
+!src/
 test.js
 test.ts
 public/
