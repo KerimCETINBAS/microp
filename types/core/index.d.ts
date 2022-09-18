@@ -35,7 +35,7 @@ export interface IMicropRequest {
 }
 export interface IMicropResponse {
     status?: number;
-    body?: string | Buffer | Uint8Array | Record<string, unknown> | Array<unknown> | File;
+    body?: string | boolean | Buffer | Uint8Array | Record<string, unknown> | Array<unknown> | File;
     headers?: Record<string, string>;
     cookies?: any;
     locals?: Record<string, unknown>;
